@@ -3,6 +3,9 @@ from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
+from PIL import Image
+
+# resizing images
 
 
 class PublishedManager(models.Manager):
@@ -67,3 +70,5 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'Comment by {self.name} on {self.post}'
+
+
