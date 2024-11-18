@@ -2,15 +2,19 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.models import User
+from taggit.managers import TaggableManager
+
 
 class PublishedManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset()\
                       .filter(status=Post.Status.PUBLISHED)
 
+
 class Post(models.Model):
     objects = models.Manager()  # менеджер, применяемый по умолчанию
     published = PublishedManager()  # конкретно-прикладной менеджер
+
     class Status(models.TextChoices):
         DRAFT = 'DF', 'Draft'
         PUBLISHED = 'PB', 'Published'
@@ -29,7 +33,7 @@ class Post(models.Model):
     status = models.CharField(max_length=2,
                               choices=Status.choices,
                               default=Status.PUBLISHED)
-
+    tags = TaggableManager()
     class Meta:
         ordering = ['-publish']
         indexes = [
